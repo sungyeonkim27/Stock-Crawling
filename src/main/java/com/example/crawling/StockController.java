@@ -7,11 +7,40 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class StockController {
+
+
+    @GetMapping("/summary")
+    public Map<String, Object> getStockSummary() throws IOException {
+        String url = "https://finance.naver.com/sise/sise_index.naver?code=KOSPI";
+        Document doc = Jsoup.connect(url).get();
+
+        // ✅ 코스피 지수
+        Element kospiElement = doc.selectFirst("#now_value");
+        String kospi = kospiElement != null ? kospiElement.text() : "데이터 없음";
+
+        // ✅ 변동폭
+        Element changeElement = doc.selectFirst("#change_value_and_rate");
+        String change = changeElement != null ? changeElement.text() : "데이터 없음";
+
+        // ✅ 시황 뉴스 5개
+        List<String> news = doc.select(".sise_report .tit a").stream()
+                .limit(5)
+                .map(Element::text)
+                .collect(Collectors.toList());
+
+        // ✅ JSON 응답용 Map
+        Map<String, Object> response = new HashMap<>();
+        response.put("kospi", kospi);
+        response.put("change", change);
+        response.put("news", news);
+
+        return response;
+    }
 
     @GetMapping("/stocks")
     public Map<String, Object> getMultipleStocks() throws IOException {
