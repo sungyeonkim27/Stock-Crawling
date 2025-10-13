@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>📈 주식 크롤링 대시보드</title>
+    <style>
+        body {
+          font-family: "Pretendard", sans-serif;
+          background-color: #f8fafc;
+          text-align: center;
+          padding: 40px;
+        }
+        h1 {
+          color: #1f2937;
+        }
+        button {
+          padding: 10px 20px;
+          margin: 10px;
+          border: none;
+          border-radius: 8px;
+          background-color: #2563eb;
+          color: white;
+          font-size: 16px;
+          cursor: pointer;
+        }
+        button:hover {
+          background-color: #1d4ed8;
+        }
+        #result {
+          margin-top: 30px;
+          text-align: left;
+          background-color: white;
+          padding: 20px;
+          border-radius: 10px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+          width: 70%;
+          margin-left: auto;
+          margin-right: auto;
+        }
+        pre {
+          white-space: pre-wrap;
+          word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+<h1>📊 Stock Crawling Dashboard</h1>
+
+<button onclick="fetchSummary()">요약 보기</button>
+<button onclick="fetchStocks()">종목 보기</button>
+
+<div id="result">
+    <p>결과가 여기에 표시됩니다.</p>
+</div>
+
+<script>
+    async function fetchSummary() {
+      const response = await fetch('/summary');
+      const data = await response.json();
+      document.getElementById('result').innerHTML =
+        `<h2>📈 코스피 요약</h2>
+         <pre>${JSON.stringify(data, null, 2)}</pre>`;
+    }
+
+    async function fetchStocks() {
+      const response = await fetch('/stocks');
+      const data = await response.json();
+      document.getElementById('result').innerHTML =
+        `<h2>💹 주요 종목</h2>
+         <pre>${JSON.stringify(data, null, 2)}</pre>`;
+    }
+</script>
+</body>
+</html>

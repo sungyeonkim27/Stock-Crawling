@@ -1,4 +1,4 @@
-package com.example.crawling;
+package com.example.crawling.controller;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
