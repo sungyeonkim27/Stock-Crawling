@@ -1,73 +1,65 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-    <meta charset="UTF-8" />
-    <title>📈 주식 크롤링 대시보드</title>
+    <meta charset="UTF-8">
+    <title>📊 Stock Crawling Dashboard</title>
     <style>
         body {
-          font-family: "Pretendard", sans-serif;
-          background-color: #f8fafc;
-          text-align: center;
-          padding: 40px;
+            font-family: "Pretendard", sans-serif;
+            margin: 40px;
+            background-color: #f8f9fa;
         }
-        h1 {
-          color: #1f2937;
-        }
+        h2 { color: #333; }
         button {
-          padding: 10px 20px;
-          margin: 10px;
-          border: none;
-          border-radius: 8px;
-          background-color: #2563eb;
-          color: white;
-          font-size: 16px;
-          cursor: pointer;
+            padding: 8px 16px;
+            margin: 10px 5px;
+            cursor: pointer;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: #007bff;
+            color: white;
         }
-        button:hover {
-          background-color: #1d4ed8;
-        }
-        #result {
-          margin-top: 30px;
-          text-align: left;
-          background-color: white;
-          padding: 20px;
-          border-radius: 10px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-          width: 70%;
-          margin-left: auto;
-          margin-right: auto;
+        button:hover { background-color: #0056b3; }
+        #dataContainer {
+            margin-top: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
         pre {
-          white-space: pre-wrap;
-          word-wrap: break-word;
+            background: #f3f3f3;
+            padding: 10px;
+            border-radius: 6px;
         }
     </style>
 </head>
+
 <body>
-<h1>📊 Stock Crawling Dashboard</h1>
+<h2>네이버 증권 크롤링 대시보드</h2>
+<p>버튼을 눌러 최신 데이터를 불러옵니다.</p>
 
-<button onclick="fetchSummary()">요약 보기</button>
-<button onclick="fetchStocks()">종목 보기</button>
+<button onclick="loadStocks()">📈 주식 데이터</button>
+<button onclick="loadMarket()">💹 코스피 & 뉴스</button>
 
-<div id="result">
-    <p>결과가 여기에 표시됩니다.</p>
-</div>
+<div id="dataContainer">데이터를 불러오려면 버튼을 클릭하세요.</div>
 
 <script>
-    async function fetchSummary() {
-      const response = await fetch('/summary');
-      const data = await response.json();
-      document.getElementById('result').innerHTML =
-        `<h2>📈 코스피 요약</h2>
-         <pre>${JSON.stringify(data, null, 2)}</pre>`;
+    async function loadStocks() {
+        const res = await fetch('/stocks');
+        const data = await res.json();
+        renderData(data);
     }
 
-    async function fetchStocks() {
-      const response = await fetch('/stocks');
-      const data = await response.json();
-      document.getElementById('result').innerHTML =
-        `<h2>💹 주요 종목</h2>
-         <pre>${JSON.stringify(data, null, 2)}</pre>`;
+    async function loadMarket() {
+        const res = await fetch('/market/summary');
+        const data = await res.json();
+        renderData(data);
+    }
+
+    function renderData(data) {
+        const container = document.getElementById('dataContainer');
+        container.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
     }
 </script>
 </body>
