@@ -54,7 +54,7 @@ public class MarketCrawler {
             kospiData.put("error", "크롤링 실패");
         }
 
-        return kospiData;
+        return kospiData; // current, change, direction
     }
 
     /** ✅ 주요 뉴스 제목 5개 가져오기 */
@@ -70,6 +70,6 @@ public class MarketCrawler {
         } catch (IOException e) {
             log.error("❌ 뉴스 크롤링 실패: {}", e.getMessage());
         }
-        return newsList;
+        return newsList; // title
     }
 }
