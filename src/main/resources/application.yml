@@ -1,13 +1,13 @@
 spring:
   datasource:
-    url: ${DATABASE_URL}
-    username: ${DATABASE_USERNAME}
-    password: ${DATABASE_PASSWORD}
+    url: jdbc:postgresql://localhost:5432/stock_db
+    username: postgres
+    password: 9198
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: update  # 또는 create, validate 등
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
