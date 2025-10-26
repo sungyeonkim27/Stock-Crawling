@@ -6,6 +6,7 @@ import com.example.crawling.model.MarketNews;
 import com.example.crawling.repository.MarketIndexRepository;
 import com.example.crawling.repository.MarketNewsRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -19,6 +20,7 @@ public class MarketDataService {
     private final MarketNewsRepository marketNewsRepository;
     private final MarketIndexRepository marketIndexRepository;
 
+    // 코스피 지수 크롤링
     public Map<String, Object> getMarketIndex() {
         Map<String, Object> data = marketCrawler.getKospiInfo();
         if (data.containsKey("current") && data.containsKey("change")) {
@@ -32,6 +34,7 @@ public class MarketDataService {
         return data;
     }
 
+    // 증권 뉴스 크롤링
     public List<String> getMarketNews() {
         List<String> newsList = marketCrawler.getTopNews();
         LocalDateTime now = LocalDateTime.now();
@@ -44,4 +47,20 @@ public class MarketDataService {
         });
         return newsList;
     }
+
+    // 뉴스 제목으로 검색
+    public List<MarketNews> searchMarketNewsByCode(String keyword) {
+        return marketNewsRepository.findByTitleContaining(keyword);
+    }
+
+    // 코스피 지수 조회
+    public List<MarketIndex> getAllMarketIndex() {
+        return marketIndexRepository.findAllByOrderByCrawledAtDesc();
+    }
+
+    // 증권 뉴스 조회
+    public List<MarketNews> getAllMarketNews() {
+        return marketNewsRepository.findAllByOrderByIdDesc();
+    }
+
 }

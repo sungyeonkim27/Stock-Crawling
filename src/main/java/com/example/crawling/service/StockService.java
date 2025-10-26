@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -57,5 +58,18 @@ public class StockService {
 
         return result;
     }
+
+    // 키워드로 조회
+    public List<CrawledPrice> searchCrawledPriceByCode(String keyword) {
+        return crawledPriceRepository.findByCodeContaining(keyword);
+    }
+    // 크롤링한 내용들 전부 조회
+    public List<CrawledPrice> getAllCrawledPrice() {
+        return crawledPriceRepository.findAllByOrderByIdDesc();
+    }
+
+
 }
+
+
 
