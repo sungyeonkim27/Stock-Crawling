@@ -47,6 +47,13 @@
 <button onclick="fetchStocks()">🗂 저장된 주식 조회</button>
 <button onclick="fetchMarket()">📰 저장된 코스피 & 뉴스 조회</button>
 
+<!-- 검색 입력 -->
+<div style="margin-top: 20px;">
+    <input type="text" id="searchKeyword" placeholder="종목명 또는 코드로 검색" />
+    <button onclick="searchStocks()">🔍 주식 검색</button>
+    <button onclick="searchMarketNews()">🔍 뉴스 검색</button>
+</div>
+
 <div id="dataContainer">데이터를 불러오려면 버튼을 클릭하세요.</div>
 
 <script>
@@ -72,6 +79,25 @@
 
     async function fetchMarket() {
         const res = await fetch('/market/allSearch');
+        const data = await res.json();
+        renderData(data);
+    }
+
+    async function searchStocks() {
+        const keyword = document.getElementById("searchKeyword").value;
+        if (!keyword.trim()) return alert("검색어를 입력하세요.");
+
+        const res = await fetch(`/stocks/search?keyword=${encodeURIComponent(keyword)}`);
+        const data = await res.json();
+        renderData(data);
+    }
+
+
+    async function searchMarketNews() {
+        const keyword = document.getElementById("searchKeyword").value;
+        if (!keyword.trim()) return alert("검색어를 입력하세요.");
+
+        const res = await fetch(`/market/search?keyword=${encodeURIComponent(keyword)}`);
         const data = await res.json();
         renderData(data);
     }

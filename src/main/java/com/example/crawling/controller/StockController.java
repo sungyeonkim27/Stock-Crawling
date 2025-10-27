@@ -1,5 +1,6 @@
 package com.example.crawling.controller;
 
+import com.example.crawling.dto.CrawledPriceResponseDto;
 import com.example.crawling.dto.StockResponseDto;
 import com.example.crawling.model.CrawledPrice;
 import com.example.crawling.service.StockService;
@@ -24,8 +25,8 @@ public class StockController {
 
     // 키워드 검색 조회
     @GetMapping("/search")
-    public ResponseEntity<List<CrawledPrice>> searchCrawledPrice(@RequestParam String keyword) {
-        List<CrawledPrice> result = stockService.searchCrawledPriceByCode(keyword);
+    public ResponseEntity<List<CrawledPriceResponseDto>> searchCrawledPrice(@RequestParam String keyword) {
+        List<CrawledPriceResponseDto> result = stockService.searchCrawledPriceByKeyword(keyword);
         return ResponseEntity.ok(result);
     }
     // 전체 조회

@@ -40,6 +40,4 @@ public class MarketController {
         result.put("TopNews", marketDataService.getAllMarketNews());
         return result;
     }
-
-
 }
