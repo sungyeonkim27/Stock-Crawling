@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/market")
+@RequestMapping("/api/market")
 public class MarketController {
 
     private final MarketDataService marketDataService;

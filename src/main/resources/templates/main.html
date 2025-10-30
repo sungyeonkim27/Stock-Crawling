@@ -59,26 +59,26 @@
 <script>
     // 크롤링 요청
     async function loadStocks() {
-        const res = await fetch('/stocks');
+        const res = await fetch('/api/stocks');
         const data = await res.json();
         renderData(data);
     }
 
     async function loadMarket() {
-        const res = await fetch('/market/summary');
+        const res = await fetch('/api/market/summary');
         const data = await res.json();
         renderData(data);
     }
 
     // 조회 요청
     async function fetchStocks() {
-        const res = await fetch('/stocks/allSearch');
+        const res = await fetch('/api/stocks/allSearch');
         const data = await res.json();
         renderData(data);
     }
 
     async function fetchMarket() {
-        const res = await fetch('/market/allSearch');
+        const res = await fetch('/api/market/allSearch');
         const data = await res.json();
         renderData(data);
     }

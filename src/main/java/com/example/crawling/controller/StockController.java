@@ -13,7 +13,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/stocks")
+@RequestMapping("/api/stocks")
 public class StockController {
 
     private final StockService stockService;
