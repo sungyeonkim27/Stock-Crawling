@@ -40,4 +40,12 @@ public class MarketController {
         result.put("TopNews", marketDataService.getAllMarketNews());
         return result;
     }
+
+    // 저장된 코스피 지수 & 증권 뉴스 모두 삭제
+    @DeleteMapping("/allDelete")
+    public ResponseEntity<Void> deleteAllMarketData() {
+        marketDataService.deleteAllMarketIndex();
+        marketDataService.deleteAllMarketNews();
+        return ResponseEntity.noContent().build();
+    }
 }

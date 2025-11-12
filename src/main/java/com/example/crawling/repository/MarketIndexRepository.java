@@ -8,4 +8,5 @@ import java.util.List;
 public interface MarketIndexRepository extends JpaRepository<MarketIndex, Long> {
 
     List<MarketIndex> findAllByOrderByCrawledAtDesc();
+    void deleteAll();
 }

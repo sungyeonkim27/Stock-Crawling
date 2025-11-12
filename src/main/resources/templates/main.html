@@ -40,12 +40,20 @@
 <p>버튼을 눌러 최신 데이터를 불러오거나, 저장된 데이터를 조회할 수 있습니다.</p>
 
 <!-- 크롤링 버튼 -->
-<button onclick="loadStocks()">📈 주식 크롤링</button>
+<button onclick="loadStocks()">📈 주가 크롤링</button>
 <button onclick="loadMarket()">💹 코스피 & 뉴스 크롤링</button>
 
 <!-- 조회 버튼 -->
-<button onclick="fetchStocks()">🗂 저장된 주식 조회</button>
+<button onclick="fetchStocks()">🗂 저장된 주가 조회</button>
 <button onclick="fetchMarket()">📰 저장된 코스피 & 뉴스 조회</button>
+
+<!-- 삭제 버튼 -->
+<div>
+    <input type="text" id="deleteCode" placeholder="삭제할 종목 코드 입력" />
+    <button onclick="deleteStocks()">❌ 저장된 주가 삭제</button>
+</div>
+
+<button onclick="deleteMarketData()">❌ 코스피 & 뉴스 삭제</button>
 
 <!-- 검색 입력 -->
 <div style="margin-top: 20px;">
@@ -100,6 +108,36 @@
         const res = await fetch(`/market/search?keyword=${encodeURIComponent(keyword)}`);
         const data = await res.json();
         renderData(data);
+    }
+
+    // 삭제 요청
+    async function deleteStocks() {
+        const stockCode = document.getElementById("deleteCode").value;
+        if (!stockCode.trim()) return alert("삭제할 종목코드를 입력하세요.");
+
+        const res = await fetch(`/api/stocks/deleteByCode?stockCode=${encodeURIComponent(stockCode)}`,
+        { method: "DELETE" }
+        );
+
+        if(res.ok) {
+            alert("삭제 완료");
+            location.reload();
+        } else {
+            alert("삭제 실패");
+        }
+    }
+
+    async function deleteMarketData() {
+        const res = await fetch(`/api/market/allDelete`,
+        { method: "DELETE" }
+        );
+
+        if(res.ok) {
+            alert("삭제 완료");
+            location.reload();
+        } else {
+            alert("삭제 실패");
+        }
     }
 
     function renderData(data) {

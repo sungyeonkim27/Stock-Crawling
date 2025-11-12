@@ -12,4 +12,6 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("크롤링 오류: " + ex.getMessage());
     }
+
+
 }

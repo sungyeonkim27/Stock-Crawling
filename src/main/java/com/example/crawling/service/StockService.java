@@ -9,11 +9,13 @@ import com.example.crawling.repository.CrawledPriceRepository;
 import com.example.crawling.repository.StockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -98,6 +100,16 @@ public class StockService {
         )).toList();
     }
 
+    // 해당 크롤링된 주식 삭제
+    @Transactional
+    public void deletePricesByStockCode(String stockCode) {
+        Optional<Stock> stockOptional = stockRepository.findByCode(stockCode);
+        if (stockOptional.isEmpty()) {
+            throw new IllegalArgumentException("해당 코드의 종목이 존재하지 않습니다: " + stockCode);
+        }
+        crawledPriceRepository.deleteByCode(stockCode);
+
+    }
 }
 
 

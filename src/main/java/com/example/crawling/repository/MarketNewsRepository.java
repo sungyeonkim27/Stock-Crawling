@@ -10,4 +10,5 @@ public interface MarketNewsRepository extends JpaRepository<MarketNews, Long> {
 
     List<MarketNews> findByTitleContaining(String keyword);
     List<MarketNews> findAllByOrderByIdDesc();
+    void deleteAll();
 }

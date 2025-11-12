@@ -29,10 +29,19 @@ public class StockController {
         List<CrawledPriceResponseDto> result = stockService.searchCrawledPriceByKeyword(keyword);
         return ResponseEntity.ok(result);
     }
+
     // 전체 조회
     @GetMapping("/allSearch")
     public ResponseEntity<List<CrawledPrice>> getAllCrawledPrice() {
         List<CrawledPrice> crawledPrices = stockService.getAllCrawledPrice();
         return ResponseEntity.ok(crawledPrices);
     }
+
+    // 해당 코드의 모든 내용 삭제
+    @DeleteMapping("/deleteByCode")
+    public ResponseEntity<Void> deleteStock(@RequestParam String stockCode) {
+        stockService.deletePricesByStockCode(stockCode);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -8,6 +8,7 @@ import com.example.crawling.repository.MarketNewsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -63,4 +64,15 @@ public class MarketDataService {
         return marketNewsRepository.findAllByOrderByIdDesc();
     }
 
+    // 저장된 코스피 지수 삭제
+    @Transactional
+    public void deleteAllMarketIndex() {
+        marketIndexRepository.deleteAll();
+    }
+
+    // 저장된 증권 뉴스 삭제
+    @Transactional
+    public  void deleteAllMarketNews() {
+        marketNewsRepository.deleteAll();
+    }
 }
