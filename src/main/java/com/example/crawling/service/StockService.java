@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -27,14 +28,14 @@ public class StockService {
     private final CrawledPriceRepository crawledPriceRepository;
 
     // 여러 종목을 한번에 조회
-    public Map<String, StockResponseDto> getStockData() {
+    public Map<String, StockResponseDto> getStockData(Principal principal) {
         Map<String, String> codes = Map.of(
                 "삼성전자", "005930",
                 "SK하이닉스", "000660",
                 "NAVER", "035420",
                 "카카오", "035720"
         );
-
+        String username = principal.getName();
         Map<String, StockResponseDto> result = new HashMap<>();
 
         codes.forEach((name, code) ->
@@ -52,11 +53,12 @@ public class StockService {
                         CrawledPrice cp = new CrawledPrice();
                         cp.setCode(code);
                         cp.setPrice(price);
+                        cp.setUsername(username);
                         cp.setTime(LocalDateTime.now());
                         crawledPriceRepository.save(cp);
 
                         // 결과 반환
-                        result.put(name, new StockResponseDto(name, price, code));
+                        result.put(name, new StockResponseDto(name, price, code, username));
                 })
         );
 

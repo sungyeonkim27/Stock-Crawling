@@ -23,6 +23,7 @@ public class MarketNews {
     private Long id;
 
     private String title;
+    private String username;
     private LocalDateTime crawledAt;
 
 }

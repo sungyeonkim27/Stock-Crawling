@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,10 +19,11 @@ public class MarketController {
     private final MarketDataService marketDataService;
 
     @GetMapping("/summary")
-    public Map<String, Object> getMarketSummary() {
+    public Map<String, Object> getMarketSummary(Principal principal) {
         Map<String, Object> result = new HashMap<>();
-        result.put("KOSPI", marketDataService.getMarketIndex());
-        result.put("TopNews", marketDataService.getMarketNews());
+        result.put("KOSPI", marketDataService.getMarketIndex(principal));
+        result.put("TopNews", marketDataService.getMarketNews(principal));
+        result.put("username", principal.getName());
         return result;
     }
 

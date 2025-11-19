@@ -25,5 +25,6 @@ public class MarketIndex {
     private double current;
     private String change;
     private String direction;
+    private String username;
     private LocalDateTime crawledAt;
 }

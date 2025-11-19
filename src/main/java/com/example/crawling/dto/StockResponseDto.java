@@ -9,4 +9,5 @@ public class StockResponseDto {
     private String name;
     private double price;
     private String code;
+    private String username;
 }

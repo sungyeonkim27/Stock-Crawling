@@ -2,6 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <title>📊 Stock Crawling Dashboard</title>
     <style>
         body {
@@ -50,10 +52,10 @@
 <!-- 삭제 버튼 -->
 <div>
     <input type="text" id="deleteCode" placeholder="삭제할 종목 코드 입력" />
-    <button onclick="deleteStocks()">❌ 저장된 주가 삭제</button>
+    <button onclick="deleteStocks()">❌ 저장된 주가 삭제(관리자만 가능)</button>
 </div>
 
-<button onclick="deleteMarketData()">❌ 코스피 & 뉴스 삭제</button>
+<button onclick="deleteMarketData()">❌ 코스피 & 뉴스 삭제(관리자만 가능)</button>
 
 <!-- 검색 입력 -->
 <div style="margin-top: 20px;">
@@ -65,6 +67,18 @@
 <div id="dataContainer">데이터를 불러오려면 버튼을 클릭하세요.</div>
 
 <script>
+    // csrf 토큰
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute("content");
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute("content");
+
+    // 공통 fetch 옵션
+    function csrfOptions(method) {
+        return {
+            method: method,
+            header: { [csrfHeader]: csrfToken }
+        }
+    }
+
     // 크롤링 요청
     async function loadStocks() {
         const res = await fetch('/api/stocks');
@@ -115,9 +129,7 @@
         const stockCode = document.getElementById("deleteCode").value;
         if (!stockCode.trim()) return alert("삭제할 종목코드를 입력하세요.");
 
-        const res = await fetch(`/api/stocks/deleteByCode?stockCode=${encodeURIComponent(stockCode)}`,
-        { method: "DELETE" }
-        );
+        const res = await fetch(`/api/stocks/deleteByCode?stockCode=${encodeURIComponent(stockCode)}`, csrfOptions("DELETE"));
 
         if(res.ok) {
             alert("삭제 완료");
@@ -128,9 +140,7 @@
     }
 
     async function deleteMarketData() {
-        const res = await fetch(`/api/market/allDelete`,
-        { method: "DELETE" }
-        );
+        const res = await fetch(`/api/market/allDelete`, csrfOptions("DELETE"));
 
         if(res.ok) {
             alert("삭제 완료");
