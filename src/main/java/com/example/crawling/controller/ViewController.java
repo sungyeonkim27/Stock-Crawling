@@ -8,6 +8,6 @@ public class ViewController {
 
     @GetMapping("/")
     public String home() {
-        return "main";
+        return "main/main";
     }
 }

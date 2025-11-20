@@ -20,7 +20,7 @@ public class AuthController {
     @GetMapping("/signup")
     public String singupForm(Model model) {
         model.addAttribute("user", new User());
-        return "signup";
+        return "user/signup";
     }
 
     @PostMapping("/signup")
@@ -28,11 +28,11 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole("ROLE_USER");
         userRepository.save(user);
-        return "redirect:/login";
+        return "redirect:user/login";
     }
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "user/login";
     }
 }

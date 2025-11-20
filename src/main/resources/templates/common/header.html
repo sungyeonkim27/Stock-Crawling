@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+
+<body>
+<header th:fragment="siteHeader" class="header">
+    <div class="header-left">
+        <h1>📊 Stock Crawling Dashboard</h1>
+    </div>
+    <div class="header-right">
+        <form th:action="@{/logout}" method="POST">
+            <button type="submit" class="btn-logout">로그아웃</button>
+        </form>
+    </div>
+</header>
+</body>
+</html>
