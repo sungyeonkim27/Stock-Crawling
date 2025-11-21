@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           script: |
             echo "📦 배포 시작..."
-            cd /root/Stock-Crawling
+            cd /root/seongyeon/Stock-Crawling
             
             echo "📌 최신 코드 가져오기"
             git fetch --all
