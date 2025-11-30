@@ -5,11 +5,54 @@ body {
     background-color: #f8f9fa;
 }
 
-.container {
-    max-width: 1200px;
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 20px;
+    max-width: 1400px;
     margin: 80px auto;
     padding: 20px;
+    font-family: "Pretendard", sans-serif;
 }
+
+/* 왼쪽 패널 */
+.panel-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* 기능 카드 스타일 */
+.card {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+}
+/* 출력 영역 */
+.panel-right {
+    display: flex;
+}
+
+.result-box {
+    flex: 1;
+    min-height: 500px;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    font-size: 14px;
+    white-space: pre-wrap;
+}
+
 
 /* 헤더 */
 .header {
@@ -33,6 +76,13 @@ body {
     color: #222;
 
     white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+/* 버튼 그룹 */
+.btn-group, .input-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 .btn-logout {
@@ -63,41 +113,24 @@ body {
 }
 
 /* 버튼 스타일 */
-.btn {
-    padding: 8px 16px;
-    margin: 8px 5px;
+button {
+    padding: 10px 16px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    font-size: 15px;
+    font-size: 14px;
+    transition: 0.2s;
 }
 
-.btn-primary {
-    background-color: #007bff;
-    color: white;
-}
 
-.btn-primary:hover {
-    background-color: #0056b3;
-}
+.btn-primary { background: #007bff; color: white; }
+.btn-primary:hover { background: #0056b3; }
 
-.btn-secondary {
-    background: #6c757d;
-    color: white;
-}
+.btn-secondary { background: #6c757d; color: white; }
+.btn-secondary:hover { background: #545b62; }
 
-.btn-secondary:hover {
-    background: #545b62;
-}
-
-.btn-danger {
-    background: #dc3545;
-    color: white;
-}
-
-.btn-danger:hover {
-    background: #b02a37;
-}
+.btn-danger { background: #dc3545; color: white; }
+.btn-danger:hover { background: #b02a37; }
 
 /* 입력 필드 */
 .input {
@@ -114,18 +147,13 @@ body {
     align-items: center;
 }
 
-/* 데이터 영역 */
-.data-box {
-    padding: 20px;
-    background: #ffffff;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    min-height: 100px;
-    white-space: pre-wrap;
-}
 
-pre {
-    background: #f3f3f3;
-    padding: 10px;
-    border-radius: 6px;
+/* 반응형 */
+@media (max-width: 1024px) {
+    .layout {
+        grid-template-columns: 1fr;
+    }
+    .panel-right {
+        min-height: 300px;
+    }
 }
