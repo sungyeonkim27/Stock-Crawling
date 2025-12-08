@@ -3,6 +3,7 @@ package com.example.crawling.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -11,6 +12,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleCrawlerException(CrawlerException ex) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body("크롤링 오류: " + ex.getMessage());
+    }
+
+    @ExceptionHandler(SignupValidationException.class)
+    public String handleSignupException(SignupValidationException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        return "redirect:/signup";
     }
 
 
