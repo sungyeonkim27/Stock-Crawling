@@ -27,6 +27,7 @@ public class StockController {
 
     @GetMapping
     public Map<String, StockResponseDto> getStocks(Principal principal) {
+
         return stockService.getStockData(principal);
     }
 
