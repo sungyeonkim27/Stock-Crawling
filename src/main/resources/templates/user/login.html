@@ -11,6 +11,13 @@
 <div class="auth-box">
     <h2>🔐 로그인</h2>
 
+    <div th:if="${errorMessage}" class="error-message">
+        <span th:text="${errorMessage}"></span>
+    </div>
+
+    <div th:if="${logoutMessage}" class="success-message">
+        <span th:text="$logoutMessage}"></span>
+    </div>
     <form th:action="@{/login}" method="post">
         <div class="form-group">
             <label>아이디</label>

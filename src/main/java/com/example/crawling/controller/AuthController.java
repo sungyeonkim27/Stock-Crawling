@@ -34,7 +34,21 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(@RequestParam(value = "error", required = false) String error,
+                        @RequestParam(value = "message", required = false) String message,
+                        @RequestParam(value = "logout", required = false) String logout,
+                        Model model) {
+        if (error != null) {
+            if (message != null) {
+                model.addAttribute("errorMessage", message);
+            } else {
+                model.addAttribute("errorMessage", "아이디 또는 비밀번호가 올바르지 않습니다.");
+            }
+            model.addAttribute("errorMessage", "아이디 또는 비밀번호가 올바르지 않습니다.");
+        }
+        if (logout != null) {
+            model.addAttribute("logoutMessage", "로그아웃되었습니다.");
+        }
         return "user/login";
     }
 }
