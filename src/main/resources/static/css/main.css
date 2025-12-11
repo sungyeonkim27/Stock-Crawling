@@ -84,6 +84,28 @@ body {
     flex-wrap: wrap;
 }
 
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-change-password {
+    background: #28a745;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 14px;
+    display: inline-block;
+}
+
+.btn-change-password:hover {
+    background: #218838;
+}
+
 .btn-logout {
     background: #dc3545;
     color: white;
