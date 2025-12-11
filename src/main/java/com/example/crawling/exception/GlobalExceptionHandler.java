@@ -20,5 +20,10 @@ public class GlobalExceptionHandler {
         return "redirect:/signup";
     }
 
+    @ExceptionHandler(PasswordChangeException.class)
+    public String handlePasswordChangeException(PasswordChangeException ex, RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("errorMessage", ex.getMessage());
+        return "redirect:/change-password";
+    }
 
 }
