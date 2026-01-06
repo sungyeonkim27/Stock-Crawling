@@ -7,13 +7,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -47,7 +45,6 @@ public class AuthController {
             } else {
                 model.addAttribute("errorMessage", "아이디 또는 비밀번호가 올바르지 않습니다.");
             }
-            model.addAttribute("errorMessage", "아이디 또는 비밀번호가 올바르지 않습니다.");
         }
         if (logout != null) {
             model.addAttribute("logoutMessage", "로그아웃되었습니다.");
@@ -77,5 +74,13 @@ public class AuthController {
         userService.changePassword(principal.getName(), currentPassword, newPassword, newPasswordConfirm);
         redirectAttributes.addFlashAttribute("successMessage", "비밀번호가 성공적으로 변경되었습니다.");
         return "redirect:/change-password";
+    }
+
+    @GetMapping("/api/check-username")
+    @ResponseBody
+    public Map<String, Boolean> checkUsername(@RequestParam String username) {
+
+        boolean exist = userRepository.existsByUsername(username);
+        return Map.of("exists", exist);
     }
 }
