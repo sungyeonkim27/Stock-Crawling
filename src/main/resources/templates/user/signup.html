@@ -29,18 +29,23 @@
     <form th:action="@{/signup}" th:object="${user}" method="post">
         <div class="form-group">
             <label>아이디</label>
-            <input type="text" th:field="*{username}" required />
+            <input type="text" th:field="*{username}" required id="username"/>
         </div>
+        <div id="username-message" class="validation-message"></div>
 
         <div class="form-group">
             <label>비밀번호</label>
-            <input type="password" th:field="*{password}" required />
+            <input type="password" th:field="*{password}" required id="password"/>
         </div>
+        <div id="password-message" class="validation-message"></div>
+
 
         <div class="form-group">
             <label>비밀번호 확인</label>
-            <input type="password" name="passwordConfirm" required />
+            <input type="password" name="passwordConfirm" required id="passwordConfirm"/>
         </div>
+        <div id="passwordConfirm-message" class="validation-message"></div>
+
 
         <button type="submit" class="btn-primary">가입하기</button>
     </form>
@@ -50,5 +55,6 @@
     </p>
 </div>
 
+<script th:src="@{/script/signup-validation.js}"></script>
 </body>
 </html>

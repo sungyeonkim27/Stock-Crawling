@@ -1,6 +1,5 @@
 package com.example.crawling.repository;
 
-import com.example.crawling.model.MarketIndex;
 import com.example.crawling.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
