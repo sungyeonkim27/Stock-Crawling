@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Map;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -81,6 +82,16 @@ public class AuthController {
     public Map<String, Boolean> checkUsername(@RequestParam String username) {
 
         boolean exist = userRepository.existsByUsername(username);
+        return Map.of("exists", exist);
+    }
+
+    @GetMapping("/api/check-password")
+    @ResponseBody
+    public Map<String, Boolean> checkPassword(Principal principal, @RequestParam String password) {
+        Optional<User> user = userRepository.findByUsername(principal.getName());
+        String currentPassword = user.get().getPassword();
+        boolean exist = currentPassword.equals(passwordEncoder.encode(password));
+
         return Map.of("exists", exist);
     }
 }

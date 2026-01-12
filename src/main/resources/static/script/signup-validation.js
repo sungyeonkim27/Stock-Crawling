@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     let debounceTimer;
 
-    //아이디 중복 체크
+    //아이디 검증
     usernameInput.addEventListener('input', function(event) {
         const InputValue = event.target.value;
 
