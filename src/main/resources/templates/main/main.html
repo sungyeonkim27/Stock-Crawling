@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ko">
 <head>
     <meta charset="UTF-8" />
     <meta name="_csrf" th:content="${_csrf.token}" />
@@ -13,8 +13,21 @@
 <div th:replace="~{common/header :: siteHeader}"></div>
 
 <main class="layout">
-    <!-- 왼쪽: 기능 카드 영역 -->
     <div class="panel-left">
+        <section class="card">
+            <h3>
+                <span sec:authentication="principal.username">사용자 이름</span> 관심 종목
+            </h3>
+            <div class="btn-group">
+                <input type="text" id="watchlist-stockCode" placeholder="종목 코드 입력">
+                <button class="btn-primary" onclick="fetchWatchlist()">관심 종목 불러오기</button>
+                <button class="btn-primary" onclick="addWatchlist()">관심 종목 추가하기</button>
+            </div>
+            <div id="watchlist-container">관심 종목 리스트</div>
+        </section>
+    </div>
+    <!-- 왼쪽: 기능 카드 영역 -->
+    <div class="panel-middle">
         <section class="card">
             <h3>📥 데이터 크롤링</h3>
             <div class="btn-group">

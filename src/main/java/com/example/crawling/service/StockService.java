@@ -39,7 +39,7 @@ public class StockService {
         Map<String, StockResponseDto> result = new HashMap<>();
 
         codes.forEach((name, code) ->
-                crawler.getPrice(code).ifPresent(price -> {
+                crawler.getStockInfo(code).ifPresent(stockInfo -> {
 
                         // 종목 저장
                         stockRepository.findByCode(code).orElseGet(() -> {
@@ -52,13 +52,13 @@ public class StockService {
                         // 가격 저장
                         CrawledPrice cp = new CrawledPrice();
                         cp.setCode(code);
-                        cp.setPrice(price);
+                        cp.setPrice(stockInfo.price());
                         cp.setUsername(username);
                         cp.setTime(LocalDateTime.now());
                         crawledPriceRepository.save(cp);
 
                         // 결과 반환
-                        result.put(name, new StockResponseDto(name, price, code, username));
+                        result.put(name, new StockResponseDto(name, stockInfo.price(), code, username));
                 })
         );
 

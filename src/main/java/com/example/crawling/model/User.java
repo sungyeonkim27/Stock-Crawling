@@ -6,6 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -23,4 +26,7 @@ public class User {
     private String password;
 
     private String role;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private Set<UserStock> watchlist = new HashSet<>();
 }

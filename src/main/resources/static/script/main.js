@@ -6,35 +6,38 @@ const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttrib
 function csrfOptions(method) {
     return {
         method: method,
-        header: { [csrfHeader]: csrfToken }
+        headers: { [csrfHeader]: csrfToken }
     }
 }
+// ------------------------------------------
 
 // 크롤링 요청
 async function loadStocks() {
     const res = await fetch('/api/stocks');
     const data = await res.json();
-    renderData(data);
+    renderData(data, 'dataContainer');
 }
-
 async function loadMarket() {
     const res = await fetch('/api/market/summary');
     const data = await res.json();
-    renderData(data);
+    renderData(data, 'dataContainer');
 }
+// -------------------------------------------
 
 // 조회 요청
 async function fetchStocks() {
     const res = await fetch('/api/stocks/allSearch');
     const data = await res.json();
-    renderData(data);
+    renderData(data, 'dataContainer');
 }
 
 async function fetchMarket() {
     const res = await fetch('/api/market/allSearch');
     const data = await res.json();
-    renderData(data);
+    renderData(data, 'dataContainer');
 }
+
+
 
 async function searchStocks() {
     const keyword = document.getElementById("searchKeyword").value;
@@ -42,7 +45,7 @@ async function searchStocks() {
 
     const res = await fetch(`/api/stocks/search?keyword=${encodeURIComponent(keyword)}`);
     const data = await res.json();
-    renderData(data);
+    renderData(data, 'dataContainer');
 }
 
 
@@ -52,8 +55,9 @@ async function searchMarketNews() {
 
     const res = await fetch(`/api/market/search?keyword=${encodeURIComponent(keyword)}`);
     const data = await res.json();
-    renderData(data);
+    renderData(data, 'dataContainer');
 }
+// ----------------------------------------------
 
 // 삭제 요청
 async function deleteStocks() {
@@ -72,7 +76,6 @@ async function deleteStocks() {
 
 async function deleteMarketData() {
     const res = await fetch(`/api/market/allDelete`, csrfOptions("DELETE"));
-
     if(res.ok) {
         alert("삭제 완료");
         location.reload();
@@ -80,8 +83,37 @@ async function deleteMarketData() {
         alert("삭제 실패");
     }
 }
+// --------------------------
 
-function renderData(data) {
-    const container = document.getElementById('dataContainer');
+// 관심 종목 관련 요청
+async function fetchWatchlist() {
+    const res = await fetch('/api/watchlist');
+    const data = await res.json();
+    renderData(data, 'watchlist-container');
+}
+
+async function addWatchlist() {
+    const stockCode = document.getElementById('watchlist-stockCode').value;
+    if (!stockCode.trim()) {
+        return alert("종목을 입력하세요");
+    }
+    try {
+        const response = await fetch(`/api/watchlist?stockCode=${stockCode}`, csrfOptions("POST"));
+        if (response.ok) {
+            alert("관심 종목 추가 완료");
+            fetchWatchlist();
+        } else {
+            alert("추가 실패");
+        }
+    } catch(error) {
+        console.error("Error", error);
+        alert("요청 중 오류 발생");
+    }
+}
+
+// ------------------------
+function renderData(data, containerId) {
+    const container = document.getElementById(containerId);
     container.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
 }
+// --------------------------------

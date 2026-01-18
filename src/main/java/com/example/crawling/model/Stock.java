@@ -1,13 +1,13 @@
 package com.example.crawling.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,4 +23,6 @@ public class Stock {
 
     private String name;
 
+    @OneToMany(mappedBy = "stock", fetch = FetchType.LAZY)
+    private Set<UserStock> watchers = new HashSet<>();
 }

@@ -25,9 +25,9 @@ public class StockController {
     private final StockService stockService;
     private final UserRepository userRepository;
 
+    // 크롤링
     @GetMapping
     public Map<String, StockResponseDto> getStocks(Principal principal) {
-
         return stockService.getStockData(principal);
     }
 
