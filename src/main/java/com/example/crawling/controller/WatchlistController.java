@@ -14,10 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 
 @RestController
 @RequiredArgsConstructor
@@ -35,7 +32,7 @@ public class WatchlistController {
         String username = principal.getName();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("없는 사용자입니다."));
         // UserStock을 가져와서 맵핑
-        List<UserStock> userStocks = userStockRepository.findByUserId(user.getId());
+        List<UserStock> userStocks = userStockRepository.findByUser(user);
         List<WatchlistResponse> watchlistResponses = userStocks
                 .stream()
                 .map(WatchlistResponse::from).toList();

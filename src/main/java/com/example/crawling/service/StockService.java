@@ -5,8 +5,12 @@ import com.example.crawling.dto.CrawledPriceResponseDto;
 import com.example.crawling.dto.StockResponseDto;
 import com.example.crawling.model.CrawledPrice;
 import com.example.crawling.model.Stock;
+import com.example.crawling.model.User;
+import com.example.crawling.model.UserStock;
 import com.example.crawling.repository.CrawledPriceRepository;
 import com.example.crawling.repository.StockRepository;
+import com.example.crawling.repository.UserRepository;
+import com.example.crawling.repository.UserStockRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,19 +28,24 @@ import java.util.stream.Collectors;
 public class StockService {
 
     private final NaverStockCrawler crawler;
+    private final UserRepository userRepository;
     private final StockRepository stockRepository;
+    private final UserStockRepository userStockRepository;
     private final CrawledPriceRepository crawledPriceRepository;
 
-    // 여러 종목을 한번에 조회
+    // 여러 종목을 한번에 크롤링
     public Map<String, StockResponseDto> getStockData(Principal principal) {
-        Map<String, String> codes = Map.of(
-                "삼성전자", "005930",
-                "SK하이닉스", "000660",
-                "NAVER", "035420",
-                "카카오", "035720"
-        );
+
         String username = principal.getName();
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("해당 사용자는 존재하지 않습니다."));
         Map<String, StockResponseDto> result = new HashMap<>();
+        List<UserStock> userStocks = userStockRepository.findByUser(user);
+
+        Map<String, String> codes = userStocks.stream()
+                .collect(Collectors.toMap(
+                us -> us.getStock().getName(),
+                us -> us.getStock().getCode()
+        ));
 
         codes.forEach((name, code) ->
                 crawler.getStockInfo(code).ifPresent(stockInfo -> {
@@ -66,8 +75,15 @@ public class StockService {
     }
 
     // 크롤링한 내용들 전부 조회
-    public List<CrawledPrice> getAllCrawledPrice() {
-        return crawledPriceRepository.findAllByOrderByIdDesc();
+    public List<CrawledPriceResponseDto> getAllCrawledPrice() {
+        List<CrawledPrice> crawledPrices = crawledPriceRepository.findAllByOrderByIdDesc();
+        List<CrawledPriceResponseDto> crawledPriceResponseDtos = crawledPrices
+                .stream()
+                .map(cp -> {
+                    Stock stock = stockRepository.findByCode(cp.getCode()).orElseThrow(() -> new RuntimeException("없는 종목입니다."));
+                    return new CrawledPriceResponseDto(cp, stock.getName());
+                }).toList();
+        return crawledPriceResponseDtos;
     }
 
     // 이름 혹은 코드로 조회
