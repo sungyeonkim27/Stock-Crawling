@@ -89,7 +89,7 @@ async function deleteMarketData() {
 async function fetchWatchlist() {
     const res = await fetch('/api/watchlist');
     const data = await res.json();
-    renderData(data, 'watchlist-container');
+    renderWatchlist(data, 'watchlist-container');
 }
 
 async function addWatchlist() {
@@ -109,6 +109,32 @@ async function addWatchlist() {
         console.error("Error", error);
         alert("요청 중 오류 발생");
     }
+}
+
+function renderWatchlist(data, containerId) {
+    const container = document.getElementById(containerId);
+
+    if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = `<p class="empty-message">관심 종목이 없습니다.</p>`;
+        return;
+    }
+    let html = `<div class="watchlist-cards">`;
+    data.forEach(item => {
+        html += `
+            <div class="watchlist-card">
+                <div class="watchlist-row">
+                    <span class="watchlist-label">종목명 : </span>
+                    <span class="watchlist-value stock-name"> ${item.stockName} </span>
+                </div>
+                <div class="watchlist-row">
+                    <span class="watchlist-label">종목번호 : </span>
+                    <span class="watchlist-value"> ${item.stockCode} </span>
+                </div>
+            </div>
+        `;
+    });
+    html += `</div>`
+    container.innerHTML = html;
 }
 
 // ------------------------

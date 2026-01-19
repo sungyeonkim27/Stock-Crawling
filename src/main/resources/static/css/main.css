@@ -190,9 +190,54 @@ input[type="text"] {
     gap: 10px;
     flex-wrap: wrap;
 }
-
 /* ===========================
-   7. 반응형
+ 7. 관심 종목 카드
+ =========================== */
+.watchlist-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.watchlist-card {
+    display: flex;
+    flex-direction: column;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 12px 15px;
+}
+
+.watchlist-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 4px 0;
+}
+
+.watchlist-label {
+    color: #6c757d;
+    font-size: 13px;
+}
+
+.watchlist-value {
+    font-weight: 500;
+    color: #333;
+}
+
+.watchlist-value.stock-name {
+    font-size: 16px;
+    color: #007bff;
+}
+
+.empty-message {
+    color: #6c757d;
+    text-align: center;
+    padding: 20px;
+}
+/* ===========================
+   8. 반응형
    =========================== */
 @media (max-width: 1200px) {
     .layout {
