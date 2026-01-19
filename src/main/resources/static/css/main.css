@@ -1,32 +1,84 @@
-/* 전체 레이아웃 */
+/* ===========================
+   1. 기본 스타일
+   =========================== */
 body {
     font-family: "Pretendard", sans-serif;
     margin: 0;
     background-color: #f8f9fa;
 }
 
+/* ===========================
+   2. 헤더
+   =========================== */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: #ffffff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 20px;
+    color: #222;
+    white-space: nowrap;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ===========================
+   3. 레이아웃
+   =========================== */
 .layout {
     display: grid;
-    grid-template-columns: 1fr 1.5fr;
+    grid-template-columns: 1fr 1.5fr 1.5fr;
     gap: 20px;
-    max-width: 1400px;
+    max-width: 1600px;
     margin: 80px auto;
     padding: 20px;
 }
 
-/* 왼쪽 패널 */
 .panel-left {
     display: flex;
     flex-direction: column;
     gap: 20px;
 }
 
-/* 기능 카드 스타일 */
+.panel-middle {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-right {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===========================
+   4. 카드
+   =========================== */
 .card {
     background: #ffffff;
     border-radius: 12px;
     padding: 20px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 .card h3 {
@@ -35,59 +87,62 @@ body {
     font-size: 18px;
     color: #333;
 }
-/* 출력 영역 */
-.panel-right {
+
+.result-card {
     display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
 .result-box {
     flex: 1;
-    min-height: 500px;
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    min-height: 400px;
+    padding: 15px;
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
     overflow-y: auto;
     font-size: 14px;
     white-space: pre-wrap;
 }
 
-
-/* 헤더 */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background: #ffffff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: fixed;
-    width: 100%;
-    top: 0;
-    left: 0;
-
-    box-sizing: border-box;
+/* ===========================
+   5. 버튼
+   =========================== */
+button {
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s;
 }
 
-.header h1 {
-    margin: 0;
-    font-size: 20px;
-    color: #222;
-
-    white-space: nowrap; /* 줄바꿈 방지 */
+.btn-primary {
+    background: #007bff;
+    color: white;
 }
 
-/* 버튼 그룹 */
-.btn-group, .input-group {
-    display: flex;
-    gap: 10px;
-    flex-wrap: wrap;
+.btn-primary:hover {
+    background: #0056b3;
 }
 
-.header-right {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #545b62;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #b02a37;
 }
 
 .btn-change-password {
@@ -119,61 +174,37 @@ body {
     background: #b02a37;
 }
 
-/* 섹션 */
-.section {
-    margin-bottom: 30px;
-    padding: 20px;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.section h2 {
-    margin-top: 0;
-    color: #333;
-}
-
-/* 버튼 스타일 */
-button {
-    padding: 10px 16px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-size: 14px;
-    transition: 0.2s;
-}
-
-
-.btn-primary { background: #007bff; color: white; }
-.btn-primary:hover { background: #0056b3; }
-
-.btn-secondary { background: #6c757d; color: white; }
-.btn-secondary:hover { background: #545b62; }
-
-.btn-danger { background: #dc3545; color: white; }
-.btn-danger:hover { background: #b02a37; }
-
-/* 입력 필드 */
-.input {
+/* ===========================
+   6. 입력 필드 & 그룹
+   =========================== */
+input[type="text"] {
     padding: 8px;
     border-radius: 6px;
     border: 1px solid #ccc;
-    width: 250px;
-    margin-right: 10px;
+    font-size: 14px;
 }
 
-/* 정렬 */
-.delete-row, .search-row {
+.btn-group,
+.input-group {
     display: flex;
-    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
+/* ===========================
+   7. 반응형
+   =========================== */
+@media (max-width: 1200px) {
+    .layout {
+        grid-template-columns: 1fr 1fr;
+    }
+}
 
-/* 반응형 */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
     .layout {
         grid-template-columns: 1fr;
     }
+
     .panel-right {
         min-height: 300px;
     }

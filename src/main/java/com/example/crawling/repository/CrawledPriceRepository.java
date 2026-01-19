@@ -10,8 +10,10 @@ public interface CrawledPriceRepository extends JpaRepository<CrawledPrice, Long
 
     List<CrawledPrice> findByCodeContaining(String keyword);
     List<CrawledPrice> findAllByOrderByIdDesc();
+    List<CrawledPrice> findByUsernameOrderByIdDesc(String username);
 
     List<CrawledPrice> findByCodeIn(List<String> matchingCodes);
+    List<CrawledPrice> findByCodeInAndUsername(List<String> matchingCodes, String username);
 
     void deleteByCode(String code);
 }
