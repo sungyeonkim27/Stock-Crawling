@@ -65,13 +65,14 @@
 
     <!-- 오른쪽: 출력 영역 -->
     <div class="panel-right">
-        <h3>
-            <span sec:authentication="principal.username">사용자 이름</span> 님의 관심 주식
-        </h3>
-        <div id="dataContainer" class="result-box">
-
-            데이터를 불러오려면 버튼을 클릭하세요.
-        </div>
+        <section class="card result-card">
+            <h3>
+                <span sec:authentication="principal.username">사용자 이름</span> 님의 관심 주식
+            </h3>
+            <div id="dataContainer" class="result-box">
+                데이터를 불러오려면 버튼을 클릭하세요.
+            </div>
+        </section>
     </div>
 </main>
 
