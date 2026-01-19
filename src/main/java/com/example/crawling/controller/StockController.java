@@ -37,15 +37,15 @@ public class StockController {
 
     // 키워드 검색 조회
     @GetMapping("/search")
-    public ResponseEntity<List<CrawledPriceResponseDto>> searchCrawledPrice(@RequestParam String keyword) {
-        List<CrawledPriceResponseDto> result = stockService.searchCrawledPriceByKeyword(keyword);
+    public ResponseEntity<List<CrawledPriceResponseDto>> searchCrawledPrice(Principal principal, @RequestParam String keyword) {
+        List<CrawledPriceResponseDto> result = stockService.searchCrawledPriceByKeyword(keyword, principal.getName());
         return ResponseEntity.ok(result);
     }
 
     // 전체 조회
     @GetMapping("/allSearch")
-    public ResponseEntity<List<CrawledPriceResponseDto>> getAllCrawledPrice() {
-        return ResponseEntity.ok(stockService.getAllCrawledPrice());
+    public ResponseEntity<List<CrawledPriceResponseDto>> getAllCrawledPrice(Principal principal) {
+        return ResponseEntity.ok(stockService.getAllCrawledPrice(principal.getName()));
     }
 
     // 해당 코드의 모든 내용 삭제

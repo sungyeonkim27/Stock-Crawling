@@ -75,8 +75,8 @@ public class StockService {
     }
 
     // 크롤링한 내용들 전부 조회
-    public List<CrawledPriceResponseDto> getAllCrawledPrice() {
-        List<CrawledPrice> crawledPrices = crawledPriceRepository.findAllByOrderByIdDesc();
+    public List<CrawledPriceResponseDto> getAllCrawledPrice(String username) {
+        List<CrawledPrice> crawledPrices = crawledPriceRepository.findByUsernameOrderByIdDesc(username);
         List<CrawledPriceResponseDto> crawledPriceResponseDtos = crawledPrices
                 .stream()
                 .map(cp -> {
@@ -87,11 +87,15 @@ public class StockService {
     }
 
     // 이름 혹은 코드로 조회
-    public List<CrawledPriceResponseDto> searchCrawledPriceByKeyword(String keyword) {
+    public List<CrawledPriceResponseDto> searchCrawledPriceByKeyword(String keyword, String username) {
+        // 1. 먼저 키워드로 stock데이터 가져오기 (이름, 코드)
+        // 2. stock의 code와 사용자 이름으로 cp 가져오기
+        // 3. cp는 DTO에 담아서 반환
+
         // 키워드로 Stock 데이터 가져오기
         List<Stock> matchingStocks = stockRepository.findByNameContaining(keyword);
 
-        // 코드
+        // 종목 코드
         List<String> codes = matchingStocks
                 .stream()
                 .map(Stock::getCode)
@@ -103,7 +107,7 @@ public class StockService {
         }
 
         // CrawledPrice 데이터 가져오기
-        List<CrawledPrice> prices = crawledPriceRepository.findByCodeIn(codes);
+        List<CrawledPrice> prices = crawledPriceRepository.findByCodeInAndUsername(codes, username);
 
         // 코드 -> 이름 매핑
         Map<String, String> codeToName = matchingStocks
