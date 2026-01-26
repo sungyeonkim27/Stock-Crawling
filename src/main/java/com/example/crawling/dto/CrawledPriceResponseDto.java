@@ -17,9 +17,9 @@ public class CrawledPriceResponseDto {
     private LocalDateTime time;
 
 
-    public CrawledPriceResponseDto(CrawledPrice crawledPrice, String stockName) {
+    public CrawledPriceResponseDto(CrawledPrice crawledPrice) {
         this.code = crawledPrice.getCode();
-        this.name = stockName;
+        this.name = crawledPrice.getStockName();
         this.price = crawledPrice.getPrice();
         this.time = crawledPrice.getTime();
     }

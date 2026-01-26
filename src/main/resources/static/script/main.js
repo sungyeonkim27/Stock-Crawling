@@ -39,9 +39,16 @@ async function fetchMarket() {
 
 
 
-async function searchStocks() {
+async function searchCrawledPrice() {
     const keyword = document.getElementById("searchKeyword").value;
     if (!keyword.trim()) return alert("검색어를 입력하세요.");
+
+    const res = await fetch(`/api/stocks/search?keyword=${encodeURIComponent(keyword)}`);
+    const data = await res.json();
+    renderData(data, 'dataContainer');
+}
+
+async function searchKeywordCrawledPrice(keyword) {
 
     const res = await fetch(`/api/stocks/search?keyword=${encodeURIComponent(keyword)}`);
     const data = await res.json();
@@ -129,6 +136,11 @@ function renderWatchlist(data, containerId) {
                 <div class="watchlist-row">
                     <span class="watchlist-label">종목번호 : </span>
                     <span class="watchlist-value"> ${item.stockCode} </span>
+                </div>
+                <div class="watchlist-row">
+                    <button class="watchlist-button">크롤링</button>
+                    <button class="watchlist-button" onclick="searchKeywordCrawledPrice('${item.stockCode}')">조회</button>
+                    <button class="watchlist-button">관심 종목 삭제</button>
                 </div>
             </div>
         `;

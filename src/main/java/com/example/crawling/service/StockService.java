@@ -61,6 +61,7 @@ public class StockService {
                         // 가격 저장
                         CrawledPrice cp = new CrawledPrice();
                         cp.setCode(code);
+                        cp.setStockName(name);
                         cp.setPrice(stockInfo.price());
                         cp.setUsername(username);
                         cp.setTime(LocalDateTime.now());
@@ -77,21 +78,14 @@ public class StockService {
     // 크롤링한 내용들 전부 조회
     public List<CrawledPriceResponseDto> getAllCrawledPrice(String username) {
         List<CrawledPrice> crawledPrices = crawledPriceRepository.findByUsernameOrderByIdDesc(username);
-        List<CrawledPriceResponseDto> crawledPriceResponseDtos = crawledPrices
+        return crawledPrices
                 .stream()
-                .map(cp -> {
-                    Stock stock = stockRepository.findByCode(cp.getCode()).orElseThrow(() -> new RuntimeException("없는 종목입니다."));
-                    return new CrawledPriceResponseDto(cp, stock.getName());
-                }).toList();
-        return crawledPriceResponseDtos;
+                .map(CrawledPriceResponseDto::new)
+                .toList();
     }
 
     // 이름 혹은 코드로 조회
     public List<CrawledPriceResponseDto> searchCrawledPriceByKeyword(String keyword, String username) {
-        // 1. 먼저 키워드로 stock데이터 가져오기 (이름, 코드)
-        // 2. stock의 code와 사용자 이름으로 cp 가져오기
-        // 3. cp는 DTO에 담아서 반환
-
         // 키워드로 Stock 데이터 가져오기
         List<Stock> matchingStocks = stockRepository.findByNameContaining(keyword);
 
@@ -109,17 +103,9 @@ public class StockService {
         // CrawledPrice 데이터 가져오기
         List<CrawledPrice> prices = crawledPriceRepository.findByCodeInAndUsername(codes, username);
 
-        // 코드 -> 이름 매핑
-        Map<String, String> codeToName = matchingStocks
-                .stream()
-                .collect(Collectors.toMap(Stock::getCode, Stock::getName));
-
-        return prices.stream().map(price -> new CrawledPriceResponseDto(
-                price.getCode(),
-                codeToName.getOrDefault(price.getCode(), "(이름없음)"),
-                price.getPrice(),
-                price.getTime()
-        )).toList();
+        return prices.stream()
+                .map(CrawledPriceResponseDto::new)
+                .toList();
     }
 
     // 해당 크롤링된 주식 삭제

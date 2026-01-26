@@ -25,6 +25,8 @@ public class CrawledPrice {
 
     private String code;
 
+    private String stockName;
+
     private double price;
 
     private String username;
