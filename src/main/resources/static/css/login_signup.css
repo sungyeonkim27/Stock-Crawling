@@ -171,3 +171,22 @@
 .btn-primary:disabled:hover {
     background: #6c757d;
 }
+
+/* 게스트 로그인 버튼 */
+.btn-guest {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #6c757d;
+    border-radius: 6px;
+    background: white;
+    color: #6c757d;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: 0.2s;
+}
+
+.btn-guest:hover {
+    background: #6c757d;
+    color: white;
+}

@@ -132,6 +132,9 @@ public class StockService {
         crawledPriceRepository.deleteByCode(stockCode);
 
     }
+
+    //
+
 }
 
 

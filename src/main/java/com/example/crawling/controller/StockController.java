@@ -8,6 +8,7 @@ import com.example.crawling.model.User;
 import com.example.crawling.repository.StockRepository;
 import com.example.crawling.repository.UserRepository;
 import com.example.crawling.service.StockService;
+import com.example.crawling.util.ValidationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -38,6 +39,13 @@ public class StockController {
     // 키워드 검색 조회
     @GetMapping("/search")
     public ResponseEntity<List<CrawledPriceResponseDto>> searchCrawledPrice(Principal principal, @RequestParam String keyword) {
+        if (keyword == null || keyword.isBlank()) {
+            return ResponseEntity.badRequest().build();
+        }
+        if (keyword.length() > 50) {
+            return ResponseEntity.badRequest().build();
+        }
+
         List<CrawledPriceResponseDto> result = stockService.searchCrawledPriceByKeyword(keyword, principal.getName());
         return ResponseEntity.ok(result);
     }
@@ -52,6 +60,9 @@ public class StockController {
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/deleteByCode")
     public ResponseEntity<?> deleteStock(@RequestParam String stockCode, Principal principal) {
+        if (!ValidationUtils.isValidStockCode(stockCode)) {
+            return ResponseEntity.badRequest().body("유효하지 않은 종목코드입니다.");
+        }
         String username = principal.getName();
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("없는 사용자입니다."));

@@ -4,7 +4,6 @@ import com.example.crawling.model.User;
 import com.example.crawling.repository.UserRepository;
 import com.example.crawling.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +11,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
 import java.util.Map;
-import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,7 +18,6 @@ public class AuthController {
 
     private final UserService userService;
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     @GetMapping("/signup")
     public String singupForm(Model model) {
@@ -71,6 +68,14 @@ public class AuthController {
         if (principal == null) {
             return "redirect:/login";
         }
+        if (currentPassword.isBlank() || newPassword.isBlank() || newPasswordConfirm.isBlank()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "모든 필드를 입력하세요.");
+            return "redirect:/change-password";
+        }
+        if (newPassword.length() < 8 || newPassword.length() > 20) {
+            redirectAttributes.addFlashAttribute("errorMessage", "비밀번호는 8~20자여야 합니다");
+            return "redirect:/change-password";
+        }
 
         userService.changePassword(principal.getName(), currentPassword, newPassword, newPasswordConfirm);
         redirectAttributes.addFlashAttribute("successMessage", "비밀번호가 성공적으로 변경되었습니다.");
@@ -80,18 +85,7 @@ public class AuthController {
     @GetMapping("/api/check-username")
     @ResponseBody
     public Map<String, Boolean> checkUsername(@RequestParam String username) {
-
-        boolean exist = userRepository.existsByUsername(username);
-        return Map.of("exists", exist);
-    }
-
-    @GetMapping("/api/check-password")
-    @ResponseBody
-    public Map<String, Boolean> checkPassword(Principal principal, @RequestParam String password) {
-        Optional<User> user = userRepository.findByUsername(principal.getName());
-        String currentPassword = user.get().getPassword();
-        boolean exist = currentPassword.equals(passwordEncoder.encode(password));
-
-        return Map.of("exists", exist);
+        boolean exists = userRepository.existsByUsername(username);
+        return Map.of("exists", exists);
     }
 }

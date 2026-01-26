@@ -34,6 +34,12 @@
     <p class="footer-text">
         계정이 없으신가요? <a th:href="@{/signup}">회원가입</a>
     </p>
+
+    <form th:action="@{/login}" method="POST" id="fakeUserForm">
+        <input type="hidden" name="username" value="FAKEUSER" />
+        <input type="hidden" name="password" value="FAKEUSER1" />
+        <button type="submit" class="btn-guest">회원가입 없이 임시 로그인</button>
+    </form>
 </div>
 
 </body>

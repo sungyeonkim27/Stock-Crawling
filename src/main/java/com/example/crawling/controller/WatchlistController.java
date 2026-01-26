@@ -8,6 +8,7 @@ import com.example.crawling.model.UserStock;
 import com.example.crawling.repository.StockRepository;
 import com.example.crawling.repository.UserRepository;
 import com.example.crawling.repository.UserStockRepository;
+import com.example.crawling.util.ValidationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,10 @@ public class WatchlistController {
     // 관심 종목 추가
     @PostMapping
     public ResponseEntity<?> addWatchlist(Principal principal, @RequestParam String stockCode) {
+        if (!ValidationUtils.isValidStockCode(stockCode)) {
+            return ResponseEntity.badRequest().body("유효하지 않은 종목코드입니다.");
+        }
+
         // 1. 사용자 검증
         String username = principal.getName();
         User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("없는 사용자입니다."));
@@ -75,7 +80,10 @@ public class WatchlistController {
     // 해당 관심 종목 삭제
     @DeleteMapping
     public ResponseEntity<?> deleteWatchlist(Principal principal, @RequestParam String stockCode) {
-        UserStock userStock;
+
+        if (!ValidationUtils.isValidStockCode(stockCode)) {
+            return ResponseEntity.badRequest().body("유효하지 않은 종목코드입니다.");
+        }
 
         // 1. 사용자 검증
         String username = principal.getName();
