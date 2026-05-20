@@ -4,78 +4,83 @@
     <meta charset="UTF-8" />
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
-    <title>📊 Stock Crawling Dashboard</title>
+    <title>StockBoard</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 
 <body>
+<div class="app-layout">
 
-<div th:replace="~{common/header :: siteHeader}"></div>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            📈 StockBoard
+        </div>
 
-<main class="layout">
-    <div class="panel-left">
-        <section class="card">
-            <h3>
-                <span sec:authentication="principal.username">사용자 이름</span> 님 관심 종목
-            </h3>
-            <div class="btn-group">
-                <input type="text" id="watchlist-stockCode" placeholder="종목 코드 입력">
-                <button class="btn-primary" onclick="fetchWatchlist()">관심 종목 불러오기</button>
-                <button class="btn-primary" onclick="addWatchlist()">관심 종목 추가하기</button>
-            </div>
+        <!-- 관심 종목 -->
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">관심 종목</div>
+            <input type="text" id="watchlist-stockCode" placeholder="종목 코드 (예: 005930)" />
+            <button class="btn-secondary" onclick="fetchWatchlist()">목록 조회</button>
+            <button class="btn-primary" onclick="addWatchlist()">종목 추가</button>
             <div id="watchlist-container"></div>
-        </section>
-    </div>
-    <!-- 왼쪽: 기능 카드 영역 -->
-    <div class="panel-middle">
-        <section class="card">
-            <h3>📥 데이터 크롤링</h3>
-            <div class="btn-group">
-                <button class="btn-primary" onclick="loadStocks()">📈 주가 크롤링</button>
-                <button class="btn-primary" onclick="loadMarket()">💹 코스피 & 뉴스 크롤링</button>
-            </div>
-        </section>
+        </div>
 
-        <section class="card">
-            <h3>📂 데이터 조회</h3>
-            <div class="btn-group">
-                <button class="btn-secondary" onclick="fetchStocks()">🗂 저장된 주가 조회</button>
-                <button class="btn-secondary" onclick="fetchMarket()">📰 저장된 코스피 & 뉴스 조회</button>
-            </div>
-        </section>
+        <!-- 크롤링 -->
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">크롤링</div>
+            <button class="btn-crawl" onclick="loadStocks()">📈 주가 크롤링</button>
+            <button class="btn-crawl" onclick="loadMarket()">💹 코스피 &amp; 뉴스</button>
+        </div>
 
-        <section class="card">
-            <h3>🧹 데이터 삭제</h3>
-            <div class="input-group">
-                <input type="text" id="deleteCode" placeholder="종목 코드 입력" />
-                <button class="btn-danger" onclick="deleteStocks()">❌ 주가 삭제</button>
-                <button class="btn-danger" onclick="deleteMarketData()">❌ 코스피 & 뉴스 삭제</button>
-            </div>
-        </section>
+        <!-- 데이터 조회 -->
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">데이터 조회</div>
+            <button class="btn-secondary" onclick="fetchStocks()">저장된 주가 조회</button>
+            <button class="btn-secondary" onclick="fetchMarket()">저장된 코스피 &amp; 뉴스</button>
+        </div>
 
-        <section class="card">
-            <h3>🔎 검색 기능</h3>
-            <div class="input-group">
-                <input type="text" id="searchKeyword" placeholder="종목명 또는 코드 검색" />
-                <button class="btn-primary" onclick="searchCrawledPrice()">🔍 주식 검색</button>
-                <button class="btn-primary" onclick="searchMarketNews()">🔍 뉴스 검색</button>
-            </div>
-        </section>
-    </div>
+        <!-- 검색 -->
+        <div class="sidebar-section">
+            <div class="sidebar-section-title">검색</div>
+            <input type="text" id="searchKeyword" placeholder="종목명 또는 코드" />
+            <button class="btn-secondary" onclick="searchCrawledPrice()">주식 검색</button>
+            <button class="btn-secondary" onclick="searchMarketNews()">뉴스 검색</button>
+        </div>
 
-    <!-- 오른쪽: 출력 영역 -->
-    <div class="panel-right">
-        <section class="card result-card">
-            <h3>
-                <span sec:authentication="principal.username">사용자 이름</span> 님의 관심 주식
-            </h3>
-            <div id="dataContainer" class="result-box">
-                데이터를 불러오려면 버튼을 클릭하세요.
-            </div>
-        </section>
-    </div>
-</main>
+        <!-- 삭제 (관리자 전용) -->
+        <div class="sidebar-section" sec:authorize="hasRole('ADMIN')">
+            <div class="sidebar-section-title">데이터 삭제 (관리자)</div>
+            <input type="text" id="deleteCode" placeholder="종목 코드" />
+            <button class="btn-danger" onclick="deleteStocks()">주가 삭제</button>
+            <button class="btn-danger" onclick="deleteMarketData()">코스피 &amp; 뉴스 삭제</button>
+        </div>
 
+        <!-- 사용자 정보 / 로그아웃 -->
+        <div class="sidebar-footer">
+            <div class="user-info">
+                👤 <span sec:authentication="principal.username">사용자</span>
+            </div>
+            <a th:href="@{/change-password}" class="btn-change-password">비밀번호 변경</a>
+            <form th:action="@{/logout}" method="POST">
+                <button type="submit" class="btn-logout">로그아웃</button>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="content-header">
+            <div>
+                <h2><span sec:authentication="principal.username">사용자</span> 님의 대시보드</h2>
+                <p class="content-subtitle">네이버 금융 실시간 데이터 크롤링</p>
+            </div>
+            <span class="live-badge">● LIVE</span>
+        </div>
+        <div id="dataContainer" class="result-box">버튼을 클릭해 데이터를 불러오세요.</div>
+    </main>
+
+</div>
 
 <script src="/script/main.js"></script>
 </body>

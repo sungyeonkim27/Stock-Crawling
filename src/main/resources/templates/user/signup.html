@@ -2,50 +2,49 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>회원가입</title>
+    <title>회원가입 — StockBoard</title>
     <link rel="stylesheet" th:href="@{/css/login_signup.css}" />
 </head>
 
 <body class="auth-container">
 
 <div class="auth-box">
-    <h2>📝 회원가입</h2>
+    <div class="auth-brand">📈 StockBoard</div>
+    <h2>회원가입</h2>
 
     <div th:if="${errorMessage}" class="error-message">
         <span th:text="${errorMessage}"></span>
     </div>
 
     <div class="requirements-box">
-        <h3>💡 회원가입 제한사항</h3>
+        <h3>계정 생성 조건</h3>
         <ul>
-            <li>아이디: 6자 이상 30자 이하로 입력해주세요</li>
-            <li>아이디: 중복된 아이디는 사용할 수 없습니다</li>
-            <li>비밀번호: 8자 이상 20자 이하로 입력해주세요</li>
-            <li>비밀번호: 숫자를 1개 이상 포함해야 합니다</li>
-            <li>비밀번호 확인: 비밀번호와 일치해야 합니다</li>
+            <li>아이디: 6자 이상 30자 이하</li>
+            <li>아이디: 중복 사용 불가</li>
+            <li>비밀번호: 8자 이상 20자 이하</li>
+            <li>비밀번호: 숫자 1개 이상 포함</li>
+            <li>비밀번호 확인: 비밀번호와 일치</li>
         </ul>
     </div>
 
     <form th:action="@{/signup}" th:object="${user}" method="post">
         <div class="form-group">
             <label>아이디</label>
-            <input type="text" th:field="*{username}" required id="username"/>
+            <input type="text" th:field="*{username}" placeholder="아이디 입력 (6~30자)" required id="username" />
         </div>
         <div id="username-message" class="validation-message"></div>
 
         <div class="form-group">
             <label>비밀번호</label>
-            <input type="password" th:field="*{password}" required id="password"/>
+            <input type="password" th:field="*{password}" placeholder="비밀번호 입력 (8~20자, 숫자 포함)" required id="password" />
         </div>
         <div id="password-message" class="validation-message"></div>
 
-
         <div class="form-group">
             <label>비밀번호 확인</label>
-            <input type="password" name="passwordConfirm" required id="passwordConfirm"/>
+            <input type="password" name="passwordConfirm" placeholder="비밀번호 재입력" required id="passwordConfirm" />
         </div>
         <div id="passwordConfirm-message" class="validation-message"></div>
-
 
         <button type="submit" class="btn-primary">가입하기</button>
     </form>
