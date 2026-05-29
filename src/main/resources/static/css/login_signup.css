@@ -143,6 +143,7 @@ body {
 }
 
 .btn-guest {
+    display: block;
     width: 100%;
     padding: 10px;
     border: 1px solid var(--border-color);
@@ -154,6 +155,9 @@ body {
     font-family: inherit;
     margin-top: 8px;
     transition: all 0.15s ease;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
 }
 
 .btn-guest:hover {

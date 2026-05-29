@@ -197,6 +197,13 @@ button:hover {
     color: white;
 }
 
+a.btn-primary {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
 .btn-crawl {
     background: rgba(63, 185, 80, 0.1);
     border-color: rgba(63, 185, 80, 0.4);
@@ -232,7 +239,8 @@ button:hover {
     color: var(--accent-red);
 }
 
-.btn-change-password {
+.btn-change-password,
+.btn-login {
     display: block;
     padding: 8px 12px;
     border-radius: 6px;
@@ -246,7 +254,8 @@ button:hover {
     font-family: inherit;
 }
 
-.btn-change-password:hover {
+.btn-change-password:hover,
+.btn-login:hover {
     color: var(--text-primary);
     border-color: var(--text-muted);
     background: #2d333b;
@@ -344,11 +353,79 @@ input::placeholder {
     font-weight: 600;
 }
 
+.watchlist-button {
+    width: auto;
+    flex: 1;
+    padding: 5px 8px;
+    font-size: 11px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.watchlist-button:hover {
+    color: var(--text-primary);
+    border-color: var(--text-muted);
+}
+
 .empty-message {
     color: var(--text-muted);
     text-align: center;
     padding: 16px 8px;
     font-size: 12px;
+}
+
+/* ===========================
+   Action Grid (메인 기능 카드)
+   =========================== */
+.action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    flex-shrink: 0;
+    margin-bottom: 16px;
+}
+
+.card {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 16px;
+}
+
+.card h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.input-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.admin-badge {
+    font-size: 10px;
+    background: rgba(248, 81, 73, 0.15);
+    border: 1px solid rgba(248, 81, 73, 0.3);
+    color: var(--accent-red);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: 500;
 }
 
 /* ===========================

@@ -21,9 +21,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/signup", "/static/**","/css/**","/script/**","/api/check-username").permitAll()
+                        // 정적 리소스 + 인증 페이지
+                        .requestMatchers("/login", "/signup", "/css/**", "/script/**", "/api/check-username").permitAll()
+                        // 조회 (비로그인 공개)
+                        .requestMatchers(HttpMethod.GET, "/", "/api/stocks/**", "/api/market/**").permitAll()
+                        // 관리자 전용
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")
+                        // 나머지(관심종목 추가, 크롤링 실행 등)는 로그인 필요
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
@@ -34,7 +39,7 @@ public class SecurityConfig {
                 )
                 .logout(logout -> logout
                         .logoutUrl("/logout")
-                        .logoutSuccessUrl("/login?logout")
+                        .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .permitAll()
