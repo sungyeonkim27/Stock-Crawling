@@ -4,6 +4,7 @@ import com.example.crawling.dto.CrawledPriceResponseDto;
 import com.example.crawling.dto.StockResponseDto;
 import com.example.crawling.model.CrawledPrice;
 import com.example.crawling.model.Stock;
+import com.example.crawling.model.StockHistory;
 import com.example.crawling.model.User;
 import com.example.crawling.repository.StockRepository;
 import com.example.crawling.repository.UserRepository;
@@ -76,6 +77,20 @@ public class StockController {
 
         stockService.deletePricesByStockCode(stockCode);
         return ResponseEntity.noContent().build();
+    }
+
+
+    // 종목 히스토리 조회
+    @GetMapping("/history")
+    public ResponseEntity<List<StockHistory>> getStockHistory(
+            @RequestParam String code,
+            @RequestParam String stockName
+    ) {
+        if (!ValidationUtils.isValidStockCode(code)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok(stockService.getStockHistory(code, stockName));
     }
 
 }

@@ -6,12 +6,13 @@
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <title>StockBoard</title>
     <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
 <div class="app-layout">
 
-    <!-- Sidebar: 관심 종목만 -->
+    <!-- Sidebar -->
     <aside class="sidebar">
         <div class="sidebar-brand">📈 StockBoard</div>
 
@@ -24,7 +25,6 @@
         </div>
 
         <div class="sidebar-footer">
-
             <!-- 로그인 사용자 -->
             <div sec:authorize="isAuthenticated()">
                 <div class="user-info">
@@ -38,59 +38,24 @@
 
             <!-- 게스트 -->
             <div sec:authorize="!isAuthenticated()">
-                <div class="user-info">
-                    👤 <span>게스트</span>
-                </div>
+                <div class="user-info">👤 <span>게스트</span></div>
                 <a th:href="@{/login}" class="btn-login">로그인</a>
             </div>
-
         </div>
     </aside>
 
     <!-- Main Content -->
     <main class="main-content">
 
-        <!-- 기능 섹션들 -->
-        <div class="action-grid">
-
-            <section class="card">
-                <h3>📥 데이터 크롤링</h3>
-                <div class="btn-group">
-                    <button class="btn-crawl" onclick="loadStocks()">📈 주가 크롤링</button>
-                    <button class="btn-crawl" onclick="loadMarket()">💹 코스피 &amp; 뉴스</button>
-                </div>
-            </section>
-
-            <section class="card">
-                <h3>📂 데이터 조회</h3>
-                <div class="btn-group">
-                    <button class="btn-secondary" onclick="fetchStocks()">저장된 주가 조회</button>
-                    <button class="btn-secondary" onclick="fetchMarket()">저장된 코스피 &amp; 뉴스</button>
-                </div>
-            </section>
-
-            <section class="card">
-                <h3>🔎 검색</h3>
-                <div class="input-row">
-                    <input type="text" id="searchKeyword" placeholder="종목명 또는 코드" />
-                    <button class="btn-secondary" onclick="searchCrawledPrice()">주식 검색</button>
-                    <button class="btn-secondary" onclick="searchMarketNews()">뉴스 검색</button>
-                </div>
-            </section>
-
-            <section class="card" sec:authorize="hasRole('ADMIN')">
-                <h3>🗑 데이터 삭제 <span class="admin-badge">관리자</span></h3>
-                <div class="input-row">
-                    <input type="text" id="deleteCode" placeholder="종목 코드" />
-                    <button class="btn-danger" onclick="deleteStocks()">주가 삭제</button>
-                    <button class="btn-danger" onclick="deleteMarketData()">코스피 &amp; 뉴스 삭제</button>
-                </div>
-            </section>
-
+        <!-- 종목 탭 바 -->
+        <div class="stock-tab-bar" id="stockTabBar">
+            <span class="tab-empty">관심 종목을 추가하면 탭이 생성됩니다.</span>
         </div>
 
-        <!-- 결과 영역 -->
-        <div id="dataContainer" class="result-box">버튼을 클릭해 데이터를 불러오세요.</div>
+        <!-- 종목 데이터 영역 -->
+        <div class="stock-page" id="stockPage">
+            <div class="stock-page-empty">종목 탭을 선택하면 차트와 데이터를 확인할 수 있습니다.</div>
+        </div>
 
     </main>
 </div>

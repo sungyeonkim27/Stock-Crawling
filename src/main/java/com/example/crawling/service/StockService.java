@@ -1,16 +1,11 @@
 package com.example.crawling.service;
 
 import com.example.crawling.crawler.NaverStockCrawler;
+import com.example.crawling.crawler.NaverStockHistoryCrawler;
 import com.example.crawling.dto.CrawledPriceResponseDto;
 import com.example.crawling.dto.StockResponseDto;
-import com.example.crawling.model.CrawledPrice;
-import com.example.crawling.model.Stock;
-import com.example.crawling.model.User;
-import com.example.crawling.model.UserStock;
-import com.example.crawling.repository.CrawledPriceRepository;
-import com.example.crawling.repository.StockRepository;
-import com.example.crawling.repository.UserRepository;
-import com.example.crawling.repository.UserStockRepository;
+import com.example.crawling.model.*;
+import com.example.crawling.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +27,8 @@ public class StockService {
     private final StockRepository stockRepository;
     private final UserStockRepository userStockRepository;
     private final CrawledPriceRepository crawledPriceRepository;
+    private final NaverStockHistoryCrawler historyСrawler;
+    private final StockHistoryRepository stockHistoryRepository;
 
     // 여러 종목을 한번에 크롤링
     public Map<String, StockResponseDto> getStockData(Principal principal) {
@@ -119,8 +116,31 @@ public class StockService {
 
     }
 
-    //
+    // 종목 히스토리 조회 (DB에 없으면 크롤링 후 저장)
+    // 최초 90일치 조회
+    public List<StockHistory> getStockHistory(String code, String stockName) {
+        List<StockHistory> existing = stockHistoryRepository.findHistoryByCode(code);
 
+        if (existing.isEmpty()) {
+            List<StockHistory> crawled = historyСrawler.crawlHistory(code, stockName, 90);
+            stockHistoryRepository.saveAll(crawled);
+            return crawled;
+        }
+        return existing;
+    }
+
+    // 오늘 종가만 추가
+    public void updateTodayHistory(String code, String stockName) {
+        List<StockHistory> crawled = historyСrawler.crawlHistory(code, stockName, 1);
+
+        if (crawled.isEmpty()) return;
+
+        StockHistory today = crawled.get(0);
+
+        if (!stockHistoryRepository.existsByCodeAndDate(today.getCode(), today.getTradeDate())) {
+            stockHistoryRepository.save(today);
+        }
+    }
 }
 
 

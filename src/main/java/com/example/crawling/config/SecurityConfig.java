@@ -22,9 +22,9 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         // 정적 리소스 + 인증 페이지
-                        .requestMatchers("/login", "/signup", "/css/**", "/script/**", "/api/check-username").permitAll()
+                        .requestMatchers("/login", "/css/**", "/script/**").permitAll()
                         // 조회 (비로그인 공개)
-                        .requestMatchers(HttpMethod.GET, "/", "/api/stocks/**", "/api/market/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/", "/api/**").permitAll()
                         // 관리자 전용
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/**").hasRole("ADMIN")

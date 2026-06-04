@@ -429,6 +429,168 @@ input::placeholder {
 }
 
 /* ===========================
+   종목 탭 바
+   =========================== */
+.stock-tab-bar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    border-bottom: 1px solid var(--border-color);
+    flex-shrink: 0;
+    padding-bottom: 0;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.stock-tab {
+    width: auto;
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: -1px;
+    white-space: nowrap;
+}
+
+.stock-tab:hover {
+    color: var(--text-primary);
+    background: none;
+    border-bottom-color: var(--border-color);
+}
+
+.stock-tab.active {
+    color: var(--accent-green);
+    border-bottom-color: var(--accent-green);
+    background: none;
+}
+
+.tab-empty {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 10px 4px;
+}
+
+/* ===========================
+   종목 페이지
+   =========================== */
+.stock-page {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+}
+
+.stock-page-empty {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+/* ===========================
+   차트 섹션
+   =========================== */
+.chart-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 20px;
+    flex-shrink: 0;
+}
+
+.chart-header {
+    margin-bottom: 16px;
+}
+
+.chart-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* ===========================
+   테이블 섹션
+   =========================== */
+.table-section {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.stock-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.stock-table thead {
+    background: var(--bg-tertiary);
+}
+
+.stock-table th {
+    padding: 12px 16px;
+    text-align: left;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stock-table td {
+    padding: 10px 16px;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stock-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.stock-table tbody tr:hover td {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* 사이드바 카드 활성 상태 */
+.watchlist-card.active {
+    border-color: var(--accent-green);
+}
+
+.watchlist-card {
+    cursor: pointer;
+}
+
+.watchlist-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.watchlist-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-blue);
+}
+
+.watchlist-code {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: monospace;
+}
+
+/* ===========================
    Scrollbar
    =========================== */
 ::-webkit-scrollbar {
